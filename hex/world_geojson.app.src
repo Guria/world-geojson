@@ -1,0 +1,10 @@
+{application, world_geojson, [
+    {description, "GeoJSON data for countries, states, and areas around the world"},
+    {vsn, "0.0.1"},
+    {registered, []},
+    {applications, [kernel, stdlib]},
+    {env, []},
+    {modules, []},
+    {licenses, ["GPL-3.0-or-later"]},
+    {links, [{"GitHub", "https://github.com/georgique/world-geojson"}]}
+]}.

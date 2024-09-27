@@ -1,0 +1,39 @@
+name: Publish Hex package
+
+on:
+  push:
+    tags:
+      - "*"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: erlef/setup-beam@v1
+        with:
+          rebar3-version: "3"
+
+      - name: Set tag
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+
+      - name: Get hex cache directory
+        id: hex-cache-dir
+        shell: bash
+        run: |
+          mkdir -p ~/.cache/rebar3/hex
+          echo "dir=$HOME/.cache/rebar3/hex" >> ${GITHUB_OUTPUT}
+
+      - uses: actions/cache@v3
+        with:
+          path: ${{ steps.hex-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-hex-${{ hashFiles('**/rebar.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-hex-
+
+      - name: Publish Hex package
+        run: rebar3 hex publish
+
+      - name: Clean up
+        run: rebar3 clean

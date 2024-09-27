@@ -3,3 +3,6 @@ composer.phar
 dist
 node_modules
 vendor
+priv
+_build
+hex/*.tar
